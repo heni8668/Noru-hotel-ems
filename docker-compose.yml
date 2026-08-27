@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: noru-hotel-ems-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: noru
+      POSTGRES_PASSWORD: noru
+      POSTGRES_DB: hotel_ems
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U noru -d hotel_ems"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:
