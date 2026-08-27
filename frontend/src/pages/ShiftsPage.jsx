@@ -47,16 +47,16 @@ export function ShiftsPage() {
         title="Shifts"
         subtitle="Define hotel shift templates, then assign employees to a shift on a given date."
         actions={
-          <div className="flex gap-2">
+          <>
             <Button variant="secondary" onClick={() => setShiftEditor("new")}>
               Add shift type
             </Button>
             <Button onClick={() => setAssignOpen(true)}>Assign shift</Button>
-          </div>
+          </>
         }
       />
 
-      <div className="mb-6 grid gap-4 md:grid-cols-3">
+      <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {shifts.map((shift) => (
           <article key={shift.id} className="rounded-2xl border border-line bg-white p-5 shadow-sm">
             <h2 className="font-bold text-ink">{shift.name}</h2>
@@ -94,36 +94,55 @@ export function ShiftsPage() {
       ) : assignments.length === 0 ? (
         <EmptyState title="No shift assignments" body="Assign employees to a shift to build the coverage roster." />
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-line bg-white shadow-sm">
-          <table className="min-w-full text-left text-sm">
-            <thead className="bg-canvas text-ink-soft">
-              <tr>
-                <th className="px-4 py-3 font-semibold">Date</th>
-                <th className="px-4 py-3 font-semibold">Employee</th>
-                <th className="px-4 py-3 font-semibold">Department</th>
-                <th className="px-4 py-3 font-semibold">Shift</th>
-                <th className="px-4 py-3 font-semibold" />
-              </tr>
-            </thead>
-            <tbody>
-              {assignments.map((item) => (
-                <tr key={item.id} className="border-t border-line">
-                  <td className="px-4 py-3">{formatDate(item.date)}</td>
-                  <td className="px-4 py-3 font-semibold">{fullName(item.employee)}</td>
-                  <td className="px-4 py-3">{item.employee.department.name}</td>
-                  <td className="px-4 py-3">
-                    {item.shift.name} ({item.shift.startTime}–{item.shift.endTime})
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <Button size="sm" variant="ghost" onClick={() => setPendingAssignment(item)}>
-                      Remove
-                    </Button>
-                  </td>
+        <>
+          <div className="space-y-3 md:hidden">
+            {assignments.map((item) => (
+              <article key={item.id} className="rounded-2xl border border-line bg-white p-4 shadow-sm">
+                <p className="font-semibold text-ink">{fullName(item.employee)}</p>
+                <p className="mt-1 text-sm text-ink-soft">{item.employee.department.name}</p>
+                <p className="mt-2 text-sm text-accent">
+                  {item.shift.name} ({item.shift.startTime}–{item.shift.endTime})
+                </p>
+                <p className="mt-1 text-xs text-ink-soft">{formatDate(item.date)}</p>
+                <div className="mt-3">
+                  <Button size="sm" variant="ghost" onClick={() => setPendingAssignment(item)}>
+                    Remove
+                  </Button>
+                </div>
+              </article>
+            ))}
+          </div>
+          <div className="hidden overflow-x-auto rounded-2xl border border-line bg-white shadow-sm md:block">
+            <table className="w-full text-left text-sm">
+              <thead className="bg-canvas text-ink-soft">
+                <tr>
+                  <th className="px-4 py-3 font-semibold">Date</th>
+                  <th className="px-4 py-3 font-semibold">Employee</th>
+                  <th className="hidden px-4 py-3 font-semibold lg:table-cell">Department</th>
+                  <th className="px-4 py-3 font-semibold">Shift</th>
+                  <th className="px-4 py-3 font-semibold" />
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {assignments.map((item) => (
+                  <tr key={item.id} className="border-t border-line">
+                    <td className="px-4 py-3">{formatDate(item.date)}</td>
+                    <td className="px-4 py-3 font-semibold">{fullName(item.employee)}</td>
+                    <td className="hidden px-4 py-3 lg:table-cell">{item.employee.department.name}</td>
+                    <td className="px-4 py-3">
+                      {item.shift.name} ({item.shift.startTime}–{item.shift.endTime})
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-3 text-right">
+                      <Button size="sm" variant="ghost" onClick={() => setPendingAssignment(item)}>
+                        Remove
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
 
       <ShiftFormModal

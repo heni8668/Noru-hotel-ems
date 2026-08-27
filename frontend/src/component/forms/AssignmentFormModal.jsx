@@ -64,11 +64,11 @@ export function AssignmentFormModal({ open, employees, shifts, submitting, onClo
         <Field label="Notes" error={form.formState.errors.notes?.message}>
           <TextArea {...form.register("notes")} placeholder="Optional" />
         </Field>
-        <div className="flex justify-end gap-3">
-          <Button type="button" variant="secondary" onClick={onClose}>
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <Button className="w-full sm:w-auto" type="button" variant="secondary" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="submit" disabled={submitting}>
+          <Button className="w-full sm:w-auto" type="submit" disabled={submitting}>
             {submitting ? "Assigning..." : "Assign shift"}
           </Button>
         </div>

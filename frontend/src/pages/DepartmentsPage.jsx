@@ -31,7 +31,7 @@ export function DepartmentsPage() {
       ) : items.length === 0 ? (
         <EmptyState title="No departments yet" body="Create the hotel departments before adding employees." />
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {items.map((item) => (
             <article key={item.id} className="rounded-2xl border border-line bg-white p-5 shadow-sm">
               <h2 className="text-lg font-bold text-ink">{item.name}</h2>

@@ -82,7 +82,7 @@ export function AttendanceFormModal({ open, record, employees, submitting, onClo
             ))}
           </SelectInput>
         </Field>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label="Date" error={form.formState.errors.date?.message}>
             <TextInput type="date" {...form.register("date")} disabled={Boolean(record)} />
           </Field>
@@ -96,7 +96,7 @@ export function AttendanceFormModal({ open, record, employees, submitting, onClo
           </Field>
         </div>
         {needsTimes ? (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field label="Check in" error={form.formState.errors.checkIn?.message}>
               <TextInput type="time" {...form.register("checkIn")} />
             </Field>
@@ -108,11 +108,11 @@ export function AttendanceFormModal({ open, record, employees, submitting, onClo
         <Field label="Notes" error={form.formState.errors.notes?.message}>
           <TextArea {...form.register("notes")} />
         </Field>
-        <div className="flex justify-end gap-3">
-          <Button type="button" variant="secondary" onClick={onClose}>
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <Button className="w-full sm:w-auto" type="button" variant="secondary" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="submit" disabled={submitting}>
+          <Button className="w-full sm:w-auto" type="submit" disabled={submitting}>
             {submitting ? "Saving..." : "Save attendance"}
           </Button>
         </div>

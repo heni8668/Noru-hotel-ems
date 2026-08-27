@@ -108,11 +108,11 @@ export function EmployeeFormModal({ open, employee, departments, roles, submitti
             ))}
           </SelectInput>
         </Field>
-        <div className="flex justify-end gap-3 sm:col-span-2">
-          <Button type="button" variant="secondary" onClick={onClose}>
+        <div className="flex flex-col-reverse gap-3 sm:col-span-2 sm:flex-row sm:justify-end">
+          <Button className="w-full sm:w-auto" type="button" variant="secondary" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="submit" disabled={submitting}>
+          <Button className="w-full sm:w-auto" type="submit" disabled={submitting}>
             {submitting ? "Saving..." : "Save employee"}
           </Button>
         </div>

@@ -31,14 +31,14 @@ export function TextArea({ className, ...props }) {
 
 export function StatCard({ title, value, hint, icon: Icon }) {
   return (
-    <div className="rounded-2xl border border-line bg-panel p-5 shadow-sm">
+    <div className="rounded-2xl border border-line bg-panel p-4 shadow-sm sm:p-5">
       <div className="flex items-start justify-between gap-3">
-        <div>
+        <div className="min-w-0">
           <p className="text-sm font-medium text-ink-soft">{title}</p>
-          <p className="mt-2 text-3xl font-extrabold tracking-tight text-ink">{value}</p>
+          <p className="mt-2 text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">{value}</p>
           {hint ? <p className="mt-1 text-sm text-ink-soft">{hint}</p> : null}
         </div>
-        <div className="rounded-xl bg-accent/10 p-3 text-accent">
+        <div className="shrink-0 rounded-xl bg-accent/10 p-3 text-accent">
           <Icon size={20} />
         </div>
       </div>
@@ -65,7 +65,7 @@ export function Badge({ children, tone = "neutral" }) {
 
 export function EmptyState({ title, body }) {
   return (
-    <div className="rounded-2xl border border-dashed border-line bg-white px-6 py-16 text-center">
+    <div className="rounded-2xl border border-dashed border-line bg-white px-4 py-12 text-center sm:px-6 sm:py-16">
       <p className="text-lg font-bold text-ink">{title}</p>
       <p className="mt-2 text-sm text-ink-soft">{body}</p>
     </div>
@@ -75,11 +75,15 @@ export function EmptyState({ title, body }) {
 export function PageHeader({ title, subtitle, actions }) {
   return (
     <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-      <div>
-        <h1 className="text-2xl font-extrabold tracking-tight text-ink">{title}</h1>
+      <div className="min-w-0">
+        <h1 className="text-xl font-extrabold tracking-tight text-ink sm:text-2xl">{title}</h1>
         <p className="mt-1 max-w-2xl text-sm text-ink-soft">{subtitle}</p>
       </div>
-      {actions}
+      {actions ? (
+        <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:justify-end [&>*]:w-full sm:[&>*]:w-auto">
+          {actions}
+        </div>
+      ) : null}
     </div>
   );
 }

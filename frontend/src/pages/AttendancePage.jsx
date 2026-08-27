@@ -80,43 +80,71 @@ export function AttendancePage() {
       ) : items.length === 0 ? (
         <EmptyState title="No attendance records" body="Record check-in and check-out for an employee to get started." />
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-line bg-white shadow-sm">
-          <table className="min-w-full text-left text-sm">
-            <thead className="bg-canvas text-ink-soft">
-              <tr>
-                <th className="px-4 py-3 font-semibold">Date</th>
-                <th className="px-4 py-3 font-semibold">Employee</th>
-                <th className="px-4 py-3 font-semibold">Department</th>
-                <th className="px-4 py-3 font-semibold">Status</th>
-                <th className="px-4 py-3 font-semibold">Check in</th>
-                <th className="px-4 py-3 font-semibold">Check out</th>
-                <th className="px-4 py-3 font-semibold" />
-              </tr>
-            </thead>
-            <tbody>
-              {items.map((item) => (
-                <tr key={item.id} className="border-t border-line">
-                  <td className="px-4 py-3">{formatDate(item.date)}</td>
-                  <td className="px-4 py-3 font-semibold">{fullName(item.employee)}</td>
-                  <td className="px-4 py-3">{item.employee.department.name}</td>
-                  <td className="px-4 py-3">
-                    <Badge tone={tones[item.status]}>{item.status}</Badge>
-                  </td>
-                  <td className="px-4 py-3">{formatDateTime(item.checkIn)}</td>
-                  <td className="px-4 py-3">{formatDateTime(item.checkOut)}</td>
-                  <td className="px-4 py-3 text-right">
-                    <Button size="sm" variant="ghost" onClick={() => setEditor(item)}>
-                      Edit
-                    </Button>
-                    <Button size="sm" variant="ghost" onClick={() => setPendingDelete(item)}>
-                      Delete
-                    </Button>
-                  </td>
+        <>
+          <div className="space-y-3 md:hidden">
+            {items.map((item) => (
+              <article key={item.id} className="rounded-2xl border border-line bg-white p-4 shadow-sm">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-ink">{fullName(item.employee)}</p>
+                    <p className="text-xs text-ink-soft">
+                      {formatDate(item.date)} · {item.employee.department.name}
+                    </p>
+                  </div>
+                  <Badge tone={tones[item.status]}>{item.status}</Badge>
+                </div>
+                <p className="mt-3 text-sm text-ink-soft">
+                  In {formatDateTime(item.checkIn)} · Out {formatDateTime(item.checkOut)}
+                </p>
+                <div className="mt-3 flex gap-2">
+                  <Button size="sm" variant="secondary" onClick={() => setEditor(item)}>
+                    Edit
+                  </Button>
+                  <Button size="sm" variant="ghost" onClick={() => setPendingDelete(item)}>
+                    Delete
+                  </Button>
+                </div>
+              </article>
+            ))}
+          </div>
+          <div className="hidden overflow-x-auto rounded-2xl border border-line bg-white shadow-sm md:block">
+            <table className="w-full text-left text-sm">
+              <thead className="bg-canvas text-ink-soft">
+                <tr>
+                  <th className="px-4 py-3 font-semibold">Date</th>
+                  <th className="px-4 py-3 font-semibold">Employee</th>
+                  <th className="hidden px-4 py-3 font-semibold lg:table-cell">Department</th>
+                  <th className="px-4 py-3 font-semibold">Status</th>
+                  <th className="hidden px-4 py-3 font-semibold xl:table-cell">Check in</th>
+                  <th className="hidden px-4 py-3 font-semibold xl:table-cell">Check out</th>
+                  <th className="px-4 py-3 font-semibold" />
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {items.map((item) => (
+                  <tr key={item.id} className="border-t border-line">
+                    <td className="px-4 py-3">{formatDate(item.date)}</td>
+                    <td className="px-4 py-3 font-semibold">{fullName(item.employee)}</td>
+                    <td className="hidden px-4 py-3 lg:table-cell">{item.employee.department.name}</td>
+                    <td className="px-4 py-3">
+                      <Badge tone={tones[item.status]}>{item.status}</Badge>
+                    </td>
+                    <td className="hidden px-4 py-3 xl:table-cell">{formatDateTime(item.checkIn)}</td>
+                    <td className="hidden px-4 py-3 xl:table-cell">{formatDateTime(item.checkOut)}</td>
+                    <td className="whitespace-nowrap px-4 py-3 text-right">
+                      <Button size="sm" variant="ghost" onClick={() => setEditor(item)}>
+                        Edit
+                      </Button>
+                      <Button size="sm" variant="ghost" onClick={() => setPendingDelete(item)}>
+                        Delete
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
 
       <AttendanceFormModal

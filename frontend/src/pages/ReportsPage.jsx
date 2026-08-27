@@ -28,7 +28,7 @@ export function ReportsPage() {
         subtitle="Department attendance quality, shift coverage, and staff punctuality — including the non-trivial SQL report."
       />
 
-      <section className="rounded-2xl border border-line bg-white p-5 shadow-sm">
+      <section className="rounded-2xl border border-line bg-white p-4 shadow-sm sm:p-5">
         <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h2 className="text-lg font-bold text-ink">Attendance by department</h2>
@@ -36,17 +36,17 @@ export function ReportsPage() {
               Expected days, presence mix, punctuality, and average hours worked across the selected range.
             </p>
           </div>
-          <div className="flex gap-3">
+          <div className="grid w-full grid-cols-1 gap-3 sm:max-w-sm sm:grid-cols-2">
             <TextInput type="date" value={from} onChange={(event) => setFrom(event.target.value)} />
             <TextInput type="date" value={to} onChange={(event) => setTo(event.target.value)} />
           </div>
         </div>
-        <div className="h-80">
+        <div className="h-56 sm:h-80">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={attendance}>
+            <BarChart data={attendance} margin={{ top: 8, right: 8, left: 0, bottom: 8 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#dce5eb" />
-              <XAxis dataKey="departmentName" tick={{ fontSize: 12 }} />
-              <YAxis tick={{ fontSize: 12 }} />
+              <XAxis dataKey="departmentName" tick={{ fontSize: 11 }} interval={0} />
+              <YAxis tick={{ fontSize: 11 }} width={32} />
               <Tooltip />
               <Legend />
               <Bar dataKey="presentCount" fill="#0f766e" name="Present" />
@@ -56,8 +56,18 @@ export function ReportsPage() {
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <div className="mt-4 overflow-x-auto">
-          <table className="min-w-full text-left text-sm">
+        <div className="mt-4 space-y-3 md:hidden">
+          {attendance.map((row) => (
+            <article key={row.departmentId} className="rounded-xl bg-canvas p-3">
+              <p className="font-semibold text-ink">{row.departmentName}</p>
+              <p className="mt-1 text-sm text-ink-soft">
+                Staff {row.employeeCount} · Attendance {row.attendanceRate}% · Punctuality {row.punctualityRate}% · Avg {row.averageHoursWorked}h
+              </p>
+            </article>
+          ))}
+        </div>
+        <div className="mt-4 hidden overflow-x-auto md:block">
+          <table className="w-full text-left text-sm">
             <thead className="text-ink-soft">
               <tr>
                 <th className="px-3 py-2 font-semibold">Department</th>
@@ -82,16 +92,29 @@ export function ReportsPage() {
         </div>
       </section>
 
-      <section className="mt-6 rounded-2xl border border-line bg-white p-5 shadow-sm">
+      <section className="mt-6 rounded-2xl border border-line bg-white p-4 shadow-sm sm:p-5">
         <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h2 className="text-lg font-bold text-ink">Shift coverage</h2>
             <p className="text-sm text-ink-soft">How many active employees in each department are rostered for each shift.</p>
           </div>
-          <TextInput type="date" value={coverageDate} onChange={(event) => setCoverageDate(event.target.value)} />
+          <TextInput className="w-full sm:max-w-52" type="date" value={coverageDate} onChange={(event) => setCoverageDate(event.target.value)} />
         </div>
-        <div className="overflow-x-auto">
-          <table className="min-w-full text-left text-sm">
+        <div className="space-y-3 md:hidden">
+          {coverage.map((row) => (
+            <article key={`${row.departmentId}-${row.shiftId}`} className="rounded-xl bg-canvas p-3">
+              <p className="font-semibold text-ink">{row.departmentName}</p>
+              <p className="mt-1 text-sm text-ink-soft">
+                {row.shiftName} ({row.startTime}–{row.endTime})
+              </p>
+              <p className="mt-1 text-sm font-semibold text-accent">
+                {row.coveragePercent}% · {row.assignedCount}/{row.activeEmployeeCount} staff
+              </p>
+            </article>
+          ))}
+        </div>
+        <div className="hidden overflow-x-auto md:block">
+          <table className="w-full text-left text-sm">
             <thead className="text-ink-soft">
               <tr>
                 <th className="px-3 py-2 font-semibold">Department</th>
@@ -118,11 +141,23 @@ export function ReportsPage() {
         </div>
       </section>
 
-      <section className="mt-6 rounded-2xl border border-line bg-white p-5 shadow-sm">
+      <section className="mt-6 rounded-2xl border border-line bg-white p-4 shadow-sm sm:p-5">
         <h2 className="text-lg font-bold text-ink">Punctuality by employee</h2>
         <p className="mb-4 text-sm text-ink-soft">Late and absent counts against scheduled and recorded days in the selected range.</p>
-        <div className="overflow-x-auto">
-          <table className="min-w-full text-left text-sm">
+        <div className="space-y-3 md:hidden">
+          {punctuality.map((row) => (
+            <article key={row.employeeId} className="rounded-xl bg-canvas p-3">
+              <p className="font-semibold text-ink">{row.fullName}</p>
+              <p className="mt-1 text-sm text-ink-soft">{row.departmentName}</p>
+              <p className="mt-2 text-sm text-ink-soft">
+                Scheduled {row.scheduledDays} · Recorded {row.recordedDays} · Late {row.lateCount} · Absent {row.absentCount}
+              </p>
+              <p className="mt-1 text-xs text-ink-soft">Avg arrival {row.averageArrivalTime ?? "—"}</p>
+            </article>
+          ))}
+        </div>
+        <div className="hidden overflow-x-auto md:block">
+          <table className="w-full text-left text-sm">
             <thead className="text-ink-soft">
               <tr>
                 <th className="px-3 py-2 font-semibold">Employee</th>

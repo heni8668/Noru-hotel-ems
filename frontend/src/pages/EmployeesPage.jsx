@@ -72,44 +72,71 @@ export function EmployeesPage() {
       ) : employees.length === 0 ? (
         <EmptyState title="No employees found" body="Add a department and role first, then create your first employee." />
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-line bg-white shadow-sm">
-          <table className="min-w-full text-left text-sm">
-            <thead className="bg-canvas text-ink-soft">
-              <tr>
-                <th className="px-4 py-3 font-semibold">Employee</th>
-                <th className="px-4 py-3 font-semibold">Department</th>
-                <th className="px-4 py-3 font-semibold">Role</th>
-                <th className="px-4 py-3 font-semibold">Hired</th>
-                <th className="px-4 py-3 font-semibold">Status</th>
-                <th className="px-4 py-3 font-semibold" />
-              </tr>
-            </thead>
-            <tbody>
-              {employees.map((employee) => (
-                <tr key={employee.id} className="border-t border-line">
-                  <td className="px-4 py-3">
+        <>
+          <div className="space-y-3 md:hidden">
+            {employees.map((employee) => (
+              <article key={employee.id} className="rounded-2xl border border-line bg-white p-4 shadow-sm">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
                     <p className="font-semibold text-ink">{fullName(employee)}</p>
-                    <p className="text-xs text-ink-soft">{employee.email}</p>
-                  </td>
-                  <td className="px-4 py-3">{employee.department.name}</td>
-                  <td className="px-4 py-3">{employee.role.name}</td>
-                  <td className="px-4 py-3">{formatDate(employee.hireDate)}</td>
-                  <td className="px-4 py-3">
-                    <Badge tone={employee.status === "ACTIVE" ? "success" : "neutral"}>{employee.status}</Badge>
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <Button size="sm" variant="ghost" onClick={() => setEditor(employee)}>
-                      Edit
-                    </Button>
-                    <Button size="sm" variant="ghost" onClick={() => setPendingDelete(employee)}>
-                      Delete
-                    </Button>
-                  </td>
+                    <p className="truncate text-xs text-ink-soft">{employee.email}</p>
+                  </div>
+                  <Badge tone={employee.status === "ACTIVE" ? "success" : "neutral"}>{employee.status}</Badge>
+                </div>
+                <p className="mt-3 text-sm text-ink-soft">
+                  {employee.department.name} · {employee.role.name}
+                </p>
+                <p className="mt-1 text-xs text-ink-soft">Hired {formatDate(employee.hireDate)}</p>
+                <div className="mt-3 flex gap-2">
+                  <Button size="sm" variant="secondary" onClick={() => setEditor(employee)}>
+                    Edit
+                  </Button>
+                  <Button size="sm" variant="ghost" onClick={() => setPendingDelete(employee)}>
+                    Delete
+                  </Button>
+                </div>
+              </article>
+            ))}
+          </div>
+          <div className="hidden overflow-x-auto rounded-2xl border border-line bg-white shadow-sm md:block">
+            <table className="w-full text-left text-sm">
+              <thead className="bg-canvas text-ink-soft">
+                <tr>
+                  <th className="px-4 py-3 font-semibold">Employee</th>
+                  <th className="px-4 py-3 font-semibold">Department</th>
+                  <th className="hidden px-4 py-3 font-semibold lg:table-cell">Role</th>
+                  <th className="hidden px-4 py-3 font-semibold lg:table-cell">Hired</th>
+                  <th className="px-4 py-3 font-semibold">Status</th>
+                  <th className="px-4 py-3 font-semibold" />
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {employees.map((employee) => (
+                  <tr key={employee.id} className="border-t border-line">
+                    <td className="px-4 py-3">
+                      <p className="font-semibold text-ink">{fullName(employee)}</p>
+                      <p className="text-xs text-ink-soft">{employee.email}</p>
+                    </td>
+                    <td className="px-4 py-3">{employee.department.name}</td>
+                    <td className="hidden px-4 py-3 lg:table-cell">{employee.role.name}</td>
+                    <td className="hidden px-4 py-3 lg:table-cell">{formatDate(employee.hireDate)}</td>
+                    <td className="px-4 py-3">
+                      <Badge tone={employee.status === "ACTIVE" ? "success" : "neutral"}>{employee.status}</Badge>
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-3 text-right">
+                      <Button size="sm" variant="ghost" onClick={() => setEditor(employee)}>
+                        Edit
+                      </Button>
+                      <Button size="sm" variant="ghost" onClick={() => setPendingDelete(employee)}>
+                        Delete
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
 
       <EmployeeFormModal

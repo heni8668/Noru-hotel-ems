@@ -43,7 +43,7 @@ export function ShiftFormModal({ open, shift, submitting, onClose, onSubmit }) {
         <Field label="Name" error={form.formState.errors.name?.message}>
           <TextInput {...form.register("name")} placeholder="Morning" />
         </Field>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label="Start time" error={form.formState.errors.startTime?.message}>
             <TextInput type="time" {...form.register("startTime")} />
           </Field>
@@ -54,11 +54,11 @@ export function ShiftFormModal({ open, shift, submitting, onClose, onSubmit }) {
         <Field label="Description" error={form.formState.errors.description?.message}>
           <TextArea {...form.register("description")} />
         </Field>
-        <div className="flex justify-end gap-3">
-          <Button type="button" variant="secondary" onClick={onClose}>
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <Button className="w-full sm:w-auto" type="button" variant="secondary" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="submit" disabled={submitting}>
+          <Button className="w-full sm:w-auto" type="submit" disabled={submitting}>
             {submitting ? "Saving..." : "Save shift"}
           </Button>
         </div>

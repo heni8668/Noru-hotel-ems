@@ -15,9 +15,9 @@ export function Modal({ open, title, children, onClose }) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-4">
       <button className="absolute inset-0 bg-ink/40" onClick={onClose} aria-label="Close dialog" />
-      <div className="relative z-10 w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl">
+      <div className="relative z-10 max-h-[92vh] w-full overflow-y-auto rounded-t-2xl bg-white p-5 shadow-2xl sm:max-w-lg sm:rounded-2xl sm:p-6">
         <div className="mb-4 flex items-center justify-between gap-4">
           <h2 className="text-lg font-bold text-ink">{title}</h2>
           <button onClick={onClose} className="rounded-lg p-1 text-ink-soft hover:bg-canvas" aria-label="Close">
@@ -42,11 +42,11 @@ export function ConfirmDialog({
   return (
     <Modal open={open} title={title} onClose={onClose}>
       <p className="text-sm text-ink-soft">{body}</p>
-      <div className="mt-6 flex justify-end gap-3">
-        <Button variant="secondary" type="button" onClick={onClose}>
+      <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+        <Button className="w-full sm:w-auto" variant="secondary" type="button" onClick={onClose}>
           Cancel
         </Button>
-        <Button variant="danger" type="button" disabled={loading} onClick={onConfirm}>
+        <Button className="w-full sm:w-auto" variant="danger" type="button" disabled={loading} onClick={onConfirm}>
           {loading ? "Working..." : confirmLabel}
         </Button>
       </div>

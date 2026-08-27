@@ -31,32 +31,21 @@ export function RolesPage() {
       ) : items.length === 0 ? (
         <EmptyState title="No roles yet" body="Create roles before assigning them to employees." />
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-line bg-white shadow-sm">
-          <table className="min-w-full text-left text-sm">
-            <thead className="bg-canvas text-ink-soft">
-              <tr>
-                <th className="px-4 py-3 font-semibold">Role</th>
-                <th className="px-4 py-3 font-semibold">Description</th>
-                <th className="px-4 py-3 font-semibold" />
-              </tr>
-            </thead>
-            <tbody>
-              {items.map((item) => (
-                <tr key={item.id} className="border-t border-line">
-                  <td className="px-4 py-3 font-semibold">{item.name}</td>
-                  <td className="px-4 py-3 text-ink-soft">{item.description || "—"}</td>
-                  <td className="px-4 py-3 text-right">
-                    <Button size="sm" variant="ghost" onClick={() => setEditor(item)}>
-                      Edit
-                    </Button>
-                    <Button size="sm" variant="ghost" onClick={() => setPendingDelete(item)}>
-                      Delete
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {items.map((item) => (
+            <article key={item.id} className="rounded-2xl border border-line bg-white p-4 shadow-sm sm:p-5">
+              <h2 className="text-lg font-bold text-ink">{item.name}</h2>
+              <p className="mt-2 min-h-12 text-sm text-ink-soft">{item.description || "No description"}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <Button size="sm" variant="secondary" onClick={() => setEditor(item)}>
+                  Edit
+                </Button>
+                <Button size="sm" variant="ghost" onClick={() => setPendingDelete(item)}>
+                  Delete
+                </Button>
+              </div>
+            </article>
+          ))}
         </div>
       )}
 

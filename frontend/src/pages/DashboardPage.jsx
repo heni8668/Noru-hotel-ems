@@ -45,15 +45,15 @@ export function DashboardPage() {
       </div>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-[1.4fr_0.8fr]">
-        <section className="rounded-2xl border border-line bg-white p-5 shadow-sm">
+        <section className="rounded-2xl border border-line bg-white p-4 shadow-sm sm:p-5">
           <h2 className="text-base font-bold text-ink">Attendance rate by department</h2>
           <p className="mb-4 text-sm text-ink-soft">Present + late against expected working days, last 14 days.</p>
-          <div className="h-80">
+          <div className="h-56 sm:h-80">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={attendance}>
+              <BarChart data={attendance} margin={{ top: 8, right: 8, left: 0, bottom: 8 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#dce5eb" />
-                <XAxis dataKey="departmentName" tick={{ fontSize: 12 }} />
-                <YAxis tick={{ fontSize: 12 }} />
+                <XAxis dataKey="departmentName" tick={{ fontSize: 11 }} interval={0} />
+                <YAxis tick={{ fontSize: 11 }} width={36} />
                 <Tooltip />
                 <Bar dataKey="attendanceRate" fill="#0f766e" radius={[6, 6, 0, 0]} name="Attendance %" />
               </BarChart>
@@ -61,20 +61,20 @@ export function DashboardPage() {
           </div>
         </section>
 
-        <section className="rounded-2xl border border-line bg-white p-5 shadow-sm">
+        <section className="rounded-2xl border border-line bg-white p-4 shadow-sm sm:p-5">
           <h2 className="text-base font-bold text-ink">Recent staff</h2>
           <div className="mt-4 space-y-3">
             {employees.slice(0, 6).map((employee) => (
-              <div key={employee.id} className="flex items-center justify-between rounded-xl bg-canvas px-3 py-3">
-                <div>
-                  <p className="font-semibold text-ink">
+              <div key={employee.id} className="flex items-center justify-between gap-3 rounded-xl bg-canvas px-3 py-3">
+                <div className="min-w-0">
+                  <p className="truncate font-semibold text-ink">
                     {employee.firstName} {employee.lastName}
                   </p>
-                  <p className="text-xs text-ink-soft">
+                  <p className="truncate text-xs text-ink-soft">
                     {employee.role.name} · {employee.department.name}
                   </p>
                 </div>
-                <span className="text-xs font-semibold text-accent">{employee.status}</span>
+                <span className="shrink-0 text-xs font-semibold text-accent">{employee.status}</span>
               </div>
             ))}
           </div>
